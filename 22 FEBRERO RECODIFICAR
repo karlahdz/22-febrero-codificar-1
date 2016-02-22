@@ -1,0 +1,40 @@
+##Recodificar y Etiquetar
+sdem105<-data.frame (sdem105)
+help(str)
+str(sdem105)
+attach(sdem105)
+table(SEX)
+table(EDA)
+EDA1<-as.numeric (as.character(EDA)) ##cambia numerico
+table(EDA1)
+library(car)
+install.packages("memisc")##para instalar la libreria car
+install.packages("lattice")
+install.packages("MASS")
+require (memisc)
+require (lattice)
+require (MASS)
+gedad<- recode (EDA1, '1:4 = 2 ; 5 : 95 = 1')
+
+##PONDERAR CASOS
+install.packages('questionr')
+require (questionr)
+c1<-wtd.table (sdem105$SEX, weights = sdem105$FAC) 
+table(c1)
+c0<- table(sdem105$SEX)
+c0
+##write.csv(c1, file='nombre del archivo donde se guardara') este comando sirve para exportar a excel
+#####Porcentajes#########
+tabrama<- wtd.table(sdem105$SEX, weights = sdem105$FAC)
+c1.1<-round((tabrama/margin.table(tabrama))*100, 2)
+c1.1
+
+##### ETIQUETAR######
+sdem105$SEX <- ordered(sdem105$SEX, levels = c(1,2), labels = c("HOMBRES", "MUJERES"))
+#Obtiene la variable CLASE2(POBLACION OCUPADA Y NO OCUPADA) a la cual asigna etiquetas a los niveles
+c2<-wtd.table (sdem105$SEX, weights = sdem105$FAC)
+c2
+View (sdem105$SEX)
+sdem105$NAC_MES <- ordered(sdem105$NAC_MES, levels = c("01","02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13"), labels = c("ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE", "NO ESPECIFICADO"))
+c3<-wtd.table (sdem105$NAC_MES, weights = sdem105$FAC)
+c3
